@@ -11,6 +11,8 @@ export class PlayerCreateComponent implements OnInit {
 
   public playerForm: FormGroup
   // Add inputs for Id and title
+  @Input() id: number;
+  @Input() title:string;
 
   constructor(private fb: FormBuilder, private ps: PlayerService) { }
 
@@ -19,11 +21,18 @@ export class PlayerCreateComponent implements OnInit {
   }
 
   createForm() {
-    // create form group using form builder, get id from input
+    this.playerForm = this.fb.group({
+      name: new FormControl(),
+      playerNumber: new FormControl(),
+      teamId: this.id
+    })
   }
 
   onSubmit() {
-    // use the create player service
+    this.ps.createPlayer(this.playerForm.value).subscribe(createdPlayerFromDb => {
+      console.log(createdPlayerFromDb)
+      //routing could go here
+    })
   }
 
 }
